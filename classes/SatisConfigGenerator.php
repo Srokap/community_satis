@@ -249,7 +249,11 @@ class SatisConfigGenerator
 					1.0.0-RC5
 				 */
 
-				$regExp = '/^[0-9]+(\.[0-9]+){0,}(-(?:dev|patch|alpha|beta|rc)([0-9]+)?)?$/i';
+				// This must follow the format of X.Y.Z or vX.Y.Z with an optional suffix of -dev, -patch
+				// (-p), -alpha (-a), -beta (-b) or -RC. The patch, alpha, beta and RC suffixes can also
+				// be followed by a number.
+
+				$regExp = '/^[0-9]+(\.[0-9]+){0,3}(-(?:dev|patch|alpha|beta|rc)([0-9]+)?)?$/i';
 				// 1948 - plugin projects
 				// 3355 valid versions - case insensitive
 				// 767 invalid versions - case insensitive
