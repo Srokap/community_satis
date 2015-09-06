@@ -153,6 +153,10 @@ class SatisConfigGenerator
 
 		$owner = $release->getOwnerEntity();
 
+		if (!$owner) {
+			return false;
+		}
+
 		if (!$name = $this->guessName($release, $extension)) {
 			return false;
 		}
