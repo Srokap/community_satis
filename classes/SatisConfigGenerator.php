@@ -157,7 +157,7 @@ class SatisConfigGenerator
 			return false;
 		} else if(!($owner instanceof ElggUser)) {
 			if ($owner instanceof PluginProject) {
-				$owner->$owner->getOwnerEntity();
+				$owner = $owner->getOwnerEntity();
 				if (!$owner) {
 					return false;
 				}
