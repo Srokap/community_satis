@@ -23,6 +23,14 @@ echo elgg_view('input/text', [
 ]);
 echo '</p>';
 
+echo '<pre>';
+
+exec('/usr/bin/env php -v', $out, $ret);
+
+echo "Exit code: $ret\n";
+echo implode("\n", $out);
+
+echo '</pre>';
 
 echo '<p>';
 echo '<label>' . elgg_echo('community_satis:settings:satisbuildtimestamp') . '</label>';

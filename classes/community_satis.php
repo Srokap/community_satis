@@ -30,7 +30,7 @@ class community_satis {
 
 		if ($writtenBytes) {
 			// call the build command
-			exec('cd /var/www/plugins.elgg.org && ./composer.phar satis:build', $output, $returnVal);
+			exec('cd /var/www/plugins.elgg.org && ./composer.phar satis:build 2>&1', $output, $returnVal);
 
 			elgg_set_plugin_setting('satisbuildoutput', implode("\n", $output), 'community_satis');
 			elgg_set_plugin_setting('satisbuildtimestamp', time(), 'community_satis');
