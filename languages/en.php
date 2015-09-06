@@ -6,4 +6,5 @@ return array(
 	'community_satis:action:generate:fail' => 'Error updating satis.json',
 	'community_satis:settings:not_writable' => 'Target config file path is not writable: %s',
 	'community_satis:settings:rebuild:button' => 'Rebuild config now',
+	'community_satis:settings:satisbuildtimestamp' => 'Last cron rebuild',
 );

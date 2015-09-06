@@ -14,9 +14,26 @@ echo '<p class="mts">' . elgg_view('output/url', [
 	'text' => elgg_echo('community_satis:settings:rebuild:button'),
 ]) . '</p>';
 
+echo '<p>';
 echo '<label>' . elgg_echo('community_satis:settings:satispath') . '</label>';
 
 echo elgg_view('input/text', [
 	'name' => 'params[satispath]',
 	'value' => community_satis::getConfigFilePath()
 ]);
+echo '</p>';
+
+
+echo '<p>';
+echo '<label>' . elgg_echo('community_satis:settings:satisbuildtimestamp') . '</label>';
+
+echo elgg_view('output/friendlytime', [
+	'time' => elgg_get_plugin_setting('satisbuildtimestamp', $pluginName),
+]);
+
+echo elgg_view('input/plaintext', [
+	'class' => 'mtm mbm',
+	'value' => elgg_get_plugin_setting('satisbuildoutput', $pluginName),
+	'disabled' => 'disabled',
+]);
+echo '</p>';

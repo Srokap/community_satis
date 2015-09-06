@@ -8,12 +8,15 @@ class community_satis {
 	}
 
 	public static function cronGenerate() {
+
+		$lastTime = elgg_get_plugin_setting('satisbuildtimestamp', 'community_satis', ELGG_ENTITIES_ANY_VALUE);
+
 		//verify that we have any new plugin releases and trigger generate
 		$countNewReleases = elgg_get_entities([
 			'type' => 'object',
 			'subtype' => 'plugin_project',
 			'count' => true,
-			'modified_time_lower' => time(),
+			'modified_time_lower' => $lastTime,
 		]);
 		if ($countNewReleases > 0) {
 			self::generate();
@@ -29,7 +32,8 @@ class community_satis {
 			// call the build command
 			exec('cd /var/www/plugins.elgg.org && php composer.phar satis:build', $output, $returnVal);
 
-			elgg_set_plugin_setting('satisbuildoutput', $output, 'community_satis');
+			elgg_set_plugin_setting('satisbuildoutput', implode("\n", $output), 'community_satis');
+			elgg_set_plugin_setting('satisbuildtimestamp', time(), 'community_satis');
 
 			return $returnVal === 0;
 		} else {
