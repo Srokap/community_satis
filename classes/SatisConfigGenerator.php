@@ -11,7 +11,7 @@ class SatisConfigGenerator
 	{
 		$filestorePath = $release->getFilenameOnFilestore();
 		$filename = $release->originalfilename;
-//	var_dump($filename, $filestorePath);
+//		var_dump($filename, $filestorePath);
 
 		$extension = strtolower(pathinfo($filename, PATHINFO_EXTENSION));
 		if ($extension == 'gz') {
@@ -21,7 +21,7 @@ class SatisConfigGenerator
 		}
 
 		if (!in_array($extension, array('zip', 'tar.gz'))) {
-//		var_dump('BAD ext: ' . $extension);
+//			var_dump('BAD ext: ' . $extension);
 			return false;
 		}
 
@@ -75,7 +75,7 @@ class SatisConfigGenerator
 					return false; //no manifests or too many manifests in proper nesting
 				}
 			} else {
-				var_dump('ERROR:', $errorCode);
+//				var_dump('ERROR:', $errorCode);
 				return false; // cant open archive
 			}
 		} else { // tar.gz
@@ -153,7 +153,7 @@ class SatisConfigGenerator
 
 		$owner = $release->getOwnerEntity();
 
-		if (!$name = guessName($release, $extension)) {
+		if (!$name = $this->guessName($release, $extension)) {
 			return false;
 		}
 
@@ -260,7 +260,7 @@ class SatisConfigGenerator
 						// var_dump($release->version, $isValidVersionFormat);
 						if ($isValidVersionFormat) {
 							$validCnt++;
-							$result[] = getReleaseConfig($release, $pluginProject);
+							$result[] = $this->getReleaseConfig($release, $pluginProject);
 
 						} else {
 							$invalidCnt++;
@@ -287,17 +287,18 @@ class SatisConfigGenerator
 
 		$configuration = array(
 			"name" => "Elgg plugins",
-			"homepage" => "http://composer.i.srokap.pl",
+			"homepage" => "http://plugins.elgg.org",
+			"description" => "For details of usage, have a look at <a class=\"alert-link\" href=\"http://community.elgg.org/pages/view/1630158/experimental-community-plugins-mirror-as-composer-repository\">this instruction</a>",
+            "twig-template" => "./views/index.html.twig",
 			"output-dir" => "web",
 			"require-all" => true,
-			"repositories" => $result
+			"repositories" => $result,
 		);
 
 //		var_dump($i, $validCnt, $invalidCnt);
 
 		$json = json_encode($configuration, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES);
 
-		// file_put_contents(elgg_get_config('dataroot') . 'satis.json', $json);
 		return file_put_contents($path, $json);
 	}
 
