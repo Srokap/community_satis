@@ -153,7 +153,7 @@ class SatisConfigGenerator
 
 		$owner = $release->getOwnerEntity();
 
-		if (!$owner) {
+		if (!$owner || !($owner instanceof ElggUser)) {
 			return false;
 		}
 
