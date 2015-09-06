@@ -153,8 +153,17 @@ class SatisConfigGenerator
 
 		$owner = $release->getOwnerEntity();
 
-		if (!$owner || !($owner instanceof ElggUser)) {
+		if (!$owner) {
 			return false;
+		} else if(!($owner instanceof ElggUser)) {
+			if ($owner instanceof PluginProject) {
+				$owner->$owner->getOwnerEntity();
+				if (!$owner) {
+					return false;
+				}
+			} else {
+				return false;
+			}
 		}
 
 		if (!$name = $this->guessName($release, $extension)) {
@@ -295,7 +304,7 @@ class SatisConfigGenerator
 
 		$configuration = array(
 			"name" => "Elgg plugins",
-			"homepage" => "http://plugins.elgg.org",
+			"homepage" => "https://plugins.elgg.org",
 			"description" => "For details of usage, have a look at <a class=\"alert-link\" href=\"http://community.elgg.org/pages/view/1630158/experimental-community-plugins-mirror-as-composer-repository\">this instruction</a>",
             "twig-template" => "./views/index.html.twig",
 			"output-dir" => "web",
