@@ -4,12 +4,37 @@ class community_satis {
 
 	public static function init() {
 		elgg_register_action('satis/generate', dirname(__DIR__) . '/actions/satis/update.php', 'admin');
+		elgg_register_plugin_hook_handler('cron', 'fifteenmin', ['community_satis', 'cronGenerate']);
+	}
+
+	public static function cronGenerate() {
+		//verify that we have any new plugin releases and trigger generate
+		$countNewReleases = elgg_get_entities([
+			'type' => 'object',
+			'subtype' => 'plugin_project',
+			'count' => true,
+			'modified_time_lower' => time(),
+		]);
+		if ($countNewReleases > 0) {
+			self::generate();
+		}
 	}
 
 	public static function generate() {
 		$generator = new SatisConfigGenerator();
 
-		return $generator->writeConfigFile(self::getConfigFilePath());
+		$writtenBytes = $generator->writeConfigFile(self::getConfigFilePath());
+
+		if ($writtenBytes) {
+			// call the build command
+			exec('cd /var/www/plugins.elgg.org && php composer.phar satis:build', $output, $returnVal);
+
+			elgg_set_plugin_setting('satisbuildoutput', $output, 'community_satis');
+
+			return $returnVal === 0;
+		} else {
+			return false;
+		}
 	}
 
 	/**
