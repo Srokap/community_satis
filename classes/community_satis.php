@@ -14,7 +14,7 @@ class community_satis {
 		//verify that we have any new plugin releases and trigger generate
 		$countNewReleases = elgg_get_entities([
 			'type' => 'object',
-			'subtype' => 'plugin_project',
+			'subtype' => 'plugin_release',
 			'count' => true,
 			'modified_time_lower' => $lastTime,
 		]);
